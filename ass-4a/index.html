@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Mobile Site</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+  <style>
+    /* Global Styles */
+    * { /* Added for better layout control */
+        box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      background-color: #f2f2f2;
+    }
+
+    .ui-header, .ui-footer {
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      color: white;
+      border: none;
+      text-shadow: none;
+    }
+
+    .ui-header .ui-title, .ui-footer .ui-title {
+      margin: 0.6em 10% 0.8em; /* jQuery Mobile standard centering */
+      padding: 0;
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-align: center; /* Ensure title text itself is centered */
+    }
+
+    .card {
+      padding: 20px;
+      margin: 15px 0;
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      text-align: center; /* Explicitly center inline/text content */
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: block; /* Treat image as block */
+      margin: 0 auto 15px auto; /* Center block element and add bottom margin */
+    }
+
+    /* Scoped text alignment instead of global */
+    .card h2 {
+      color: #4e54c8;
+      margin-top: 20px; /* Keep top margin if needed after image */
+      margin-bottom: 10px; /* Added bottom margin */
+      font-weight: 500;
+      text-align: center; /* Ensure h2 text is centered */
+    }
+
+    .card p {
+      line-height: 1.6;
+      color: #666;
+      margin-bottom: 20px;
+      text-align: center; /* Ensure p text is centered */
+    }
+
+    /* Button Styling */
+    .ui-btn {
+      margin: 6px 4px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      border-radius: 30px !important;
+      padding: 10px 20px !important;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;
+      border: none !important;
+    }
+
+    .ui-btn-b {
+      background: linear-gradient(135deg, #4e54c8, #8f94fb) !important;
+      color: white !important;
+      text-shadow: none !important;
+    }
+
+    .ui-btn-inline {
+      display: inline-block; /* Keep for nav menu */
+    }
+
+    /* Form Styling */
+    input, textarea {
+      border-radius: 8px !important;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+      padding: 12px !important;
+      margin-bottom: 16px !important;
+      /* Inputs usually take full width - centering the block is less common */
+    }
+
+    label {
+      color: #555;
+      font-weight: 500;
+      margin-left: 4px;
+      text-align: left; /* Labels usually left-aligned */
+      display: block; /* Ensure label takes its own line */
+      margin-bottom: 4px;
+    }
+
+    /* Navigation Menu */
+    .nav-menu {
+      display: flex;
+      justify-content: center; /* Already centered */
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    /* Feature Section */
+    .feature-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center; /* Changed from space-between for better centering */
+      gap: 15px; /* Added gap for spacing */
+      margin: 20px 0;
+    }
+
+    .feature-box {
+      flex: 0 1 calc(50% - 10px); /* Allow shrinking, basis 50% minus gap */
+      min-width: 150px; /* Prevent boxes from becoming too narrow */
+      background-color: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 15px; /* Keep bottom margin if gap isn't enough */
+      box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+      text-align: center; /* Center content within the box */
+    }
+     /* Adjust flex basis for smaller screens if needed */
+     @media (max-width: 480px) {
+        .feature-box {
+            flex: 0 1 100%; /* Full width on very small screens */
+        }
+     }
+
+
+    .feature-icon {
+      font-size: 24px;
+      color: #4e54c8;
+      margin-bottom: 10px;
+    }
+
+    /* Footer Style */
+     .ui-footer h4 { /* Center footer text */
+        text-align: center;
+        margin: 0.8em 0 0.5em; /* Adjust footer text margin */
+        font-weight: normal;
+        font-size: 0.9em;
+     }
+
+    .footer-links {
+      display: flex;
+      justify-content: center; /* Already centered */
+      padding-bottom: 10px; /* Add padding below links */
+    }
+
+    .footer-links a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    /* Back Button */
+    .back-button {
+      margin-top: 15px;
+      display: inline-block; /* Centered by parent card's text-align: center */
+    }
+  </style>
+</head>
+<body>
+
+  <div data-role="page" id="home">
+    <div data-role="header" data-position="fixed" data-theme="b">
+      <h1>My Mobile Site</h1>
+    </div>
+
+    <div data-role="content">
+      <div class="card">
+        <img width="150" src="https://cdn3d.iconscout.com/3d/premium/thumb/welcome-robot-3d-icon-download-in-png-blend-fbx-gltf-file-formats--ai-bot-artificial-intelligence-pack-science-technology-icons-10239083.png?f=webp" alt="Welcome Image">
+        <h2>Welcome to Our Platform</h2>
+        <p>Experience our modern mobile-friendly website with enhanced UI and features. Explore what we have to offer!</p>
+
+        <div class="nav-menu">
+          <a href="#about" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-btn-b">About Us</a>
+          <a href="#features" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-btn-b">Features</a>
+          <a href="#contact" class="ui-btn ui-btn-inline ui-corner-all ui-shadow ui-btn-b">Contact Us</a>
+        </div>
+      </div>
+
+      <div class="feature-section">
+        <div class="feature-box">
+          <div class="feature-icon">📱</div>
+          <h3>Responsive Design</h3>
+          <p>Optimized for all devices</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🚀</div>
+          <h3>Fast Loading</h3>
+          <p>Smooth performance</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🎨</div>
+          <h3>Modern UI</h3>
+          <p>Beautiful interface</p>
+        </div>
+        <div class="feature-box">
+          <div class="feature-icon">🔒</div>
+          <h3>Secure</h3>
+          <p>Your data is protected</p>
+        </div>
+      </div>
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-theme="b">
+      <h4>&copy; 2025 MySite</h4>
+      <div class="footer-links">
+        <a href="#privacy">Privacy</a>
+        <a href="#terms">Terms</a>
+        <a href="#help">Help</a>
+      </div>
+    </div>
+  </div>
+
+  <div data-role="page" id="about">
+    <div data-role="header" data-position="fixed" data-theme="b">
+      <a href="#home" data-icon="home" data-iconpos="notext" class="ui-btn-left">Home</a>
+      <h1>About Us</h1>
+    </div>
+
+    <div data-role="content">
+      <div class="card">
+        <!-- <img width="150" src="https://cdn3d.iconscout.com/3d/premium/thumb/about-us-3d-icon-download-in-png-blend-fbx-gltf-file-formats--information-info-help-communication-faq-websites-elements-pack-design-development-icons-8529328.png?f=webp" alt="About Us"> -->
+        <h2>Our Story</h2>
+        <p>We build exceptional mobile-friendly web applications using jQuery Mobile. With years of experience, we focus on creating intuitive interfaces that deliver outstanding user experiences.</p>
+        <p>Our team is passionate about web development and mobile optimization, ensuring that every project meets the highest standards of performance and design.</p>
+      </div>
+
+      <div class="card">
+        <h2>Our Team</h2>
+        <div class="feature-section">
+          <div class="feature-box">
+            <img src="https://avatars.githubusercontent.com/u/190694148?v=4" alt="Team Member" style="border-radius: 50%; width: 100px; height: 100px;">
+            <h3>Aryan Babare</h3>
+            <p>Lead Developer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-theme="b">
+      <h4>About Page</h4>
+    </div>
+  </div>
+
+  <div data-role="page" id="features">
+    <div data-role="header" data-position="fixed" data-theme="b">
+      <a href="#home" data-icon="home" data-iconpos="notext" class="ui-btn-left">Home</a>
+      <h1>Our Features</h1>
+    </div>
+
+    <div data-role="content">
+      <div class="card">
+        <img width="150" src="https://cdn3d.iconscout.com/3d/premium/thumb/new-features-3d-icon-download-in-png-blend-fbx-gltf-file-formats--launch-development-web-website-software-testing-pack-seo-icons-7597168.png?f=webp" alt="Features">
+        <h2>What We Offer</h2>
+        <p>Discover the powerful features that make our platform stand out from the competition.</p>
+
+        <div class="feature-section">
+          <div class="feature-box">
+            <div class="feature-icon">💻</div>
+            <h3>Responsive Design</h3>
+            <p>Looks great on all devices</p>
+          </div>
+          <div class="feature-box">
+            <div class="feature-icon">⚡</div>
+            <h3>Performance</h3>
+            <p>Lightning fast loading times</p>
+          </div>
+          <div class="feature-box">
+            <div class="feature-icon">🔧</div>
+            <h3>Customizable</h3>
+            <p>Tailor to your needs</p>
+          </div>
+          <div class="feature-box">
+            <div class="feature-icon">📊</div>
+            <h3>Analytics</h3>
+            <p>Track user engagement</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-theme="b">
+      <h4>Features Page</h4>
+    </div>
+  </div>
+
+  <div data-role="page" id="contact">
+    <div data-role="header" data-position="fixed" data-theme="b">
+      <a href="#home" data-icon="home" data-iconpos="notext" class="ui-btn-left">Home</a>
+      <h1>Contact Us</h1>
+    </div>
+
+    <div data-role="content">
+      <div class="card">
+        <h2>Get In Touch</h2>
+        <p>We'd love to hear from you! Fill out the form below and we'll get back to you as soon as possible.</p>
+
+        <form>
+          <label for="name">Full Name:</label>
+          <input type="text" name="name" id="name" placeholder="Enter your name" />
+
+          <label for="email">Email Address:</label>
+          <input type="email" name="email" id="email" placeholder="Enter your email" />
+
+          <label for="phone">Phone Number:</label>
+          <input type="tel" name="phone" id="phone" placeholder="Enter your phone number" />
+
+          <label for="message">Message:</label>
+          <textarea name="message" id="message" placeholder="What would you like to tell us?" rows="5"></textarea>
+
+          <input type="submit" value="Send Message" class="ui-btn ui-btn-b ui-corner-all ui-shadow"/>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Visit Our Office</h2>
+        <p>123 Web Developer Street<br>
+        Mobile City, MC 12345<br>
+        contact@mymobilesite.com<br>
+        (555) 123-4567</p>
+      </div>
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-theme="b">
+      <h4>Contact Page</h4>
+    </div>
+  </div>
+
+  <div data-role="page" id="privacy">
+    <div data-role="header" data-position="fixed" data-theme="b">
+      <a href="#home" data-icon="home" data-iconpos="notext" class="ui-btn-left">Home</a>
+      <h1>Privacy Policy</h1>
+    </div>
+
+    <div data-role="content">
+      <div class="card">
+        <h2>Privacy Policy</h2>
+        <p>Last updated: April 10, 2025</p>
+        <p>This privacy policy outlines how we collect, use, and protect your information when you use our website.</p>
+        <p>We are committed to ensuring that your privacy is protected. Any information we collect will only be used in accordance with this privacy statement.</p>
+        <a href="#home" class="ui-btn ui-icon-home ui-btn-icon-left ui-corner-all ui-shadow back-button">Back to Home</a>
+      </div>
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-theme="b">
+      <h4>Privacy Policy</h4>
+    </div>
+  </div>
+
+  <div data-role="page" id="terms">
+    <div data-role="header" data-position="fixed" data-theme="b">
+      <a href="#home" data-icon="home" data-iconpos="notext" class="ui-btn-left">Home</a>
+      <h1>Terms of Service</h1>
+    </div>
+
+    <div data-role="content">
+      <div class="card">
+        <h2>Terms of Service</h2>
+        <p>Last updated: April 10, 2025</p>
+        <p>By accessing and using this website, you accept these terms and conditions in full.</p>
+        <p>All content on this website is provided for general information purposes only. We make no warranties about the completeness, reliability, and accuracy of this information.</p>
+        <a href="#home" class="ui-btn ui-icon-home ui-btn-icon-left ui-corner-all ui-shadow back-button">Back to Home</a>
+      </div>
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-theme="b">
+      <h4>Terms of Service</h4>
+    </div>
+  </div>
+
+  <div data-role="page" id="help">
+    <div data-role="header" data-position="fixed" data-theme="b">
+      <a href="#home" data-icon="home" data-iconpos="notext" class="ui-btn-left">Home</a>
+      <h1>Help & Support</h1>
+    </div>
+
+    <div data-role="content">
+      <div class="card">
+        <h2>Frequently Asked Questions</h2>
+        <div data-role="collapsible-set" style="text-align: left;"> <div data-role="collapsible">
+            <h3>How do I create an account?</h3>
+            <p>Click on the "Sign Up" button in the top right corner and follow the instructions to create your account.</p>
+          </div>
+          <div data-role="collapsible">
+            <h3>Is this service free to use?</h3>
+            <p>Yes, our basic service is completely free. We also offer premium features for a small monthly fee.</p>
+          </div>
+          <div data-role="collapsible">
+            <h3>How can I contact support?</h3>
+            <p>You can reach our support team by filling out the form on our Contact page or by emailing support@mymobilesite.com.</p>
+          </div>
+        </div>
+        <a href="#home" class="ui-btn ui-icon-home ui-btn-icon-left ui-corner-all ui-shadow back-button">Back to Home</a>
+      </div>
+    </div>
+
+    <div data-role="footer" data-position="fixed" data-theme="b">
+      <h4>Help & Support</h4>
+    </div>
+  </div>
+</body>
+</html>
