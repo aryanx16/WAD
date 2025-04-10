@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registered Users</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      padding: 40px;
+    }
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .user-list {
+      max-width: 700px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .user-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid #eee;
+    }
+    .user-item:last-child {
+      border-bottom: none;
+    }
+    .user-item span {
+      font-weight: bold;
+      display: inline-block;
+      width: 100px;
+    }
+    .empty {
+      text-align: center;
+      color: #999;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h2>Registered Users</h2>
+  <div class="user-list" id="userList"></div>
+
+  <script>
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const list = document.getElementById("userList");
+
+    if (users.length === 0) {
+      list.innerHTML = '<p class="empty">No registered users found.</p>';
+    } else {
+      users.forEach(user => {
+        const div = document.createElement("div");
+        div.className = "user-item";
+        div.innerHTML = `
+          <span>Name:</span> ${user.name}<br />
+          <span>Email:</span> ${user.email}<br />
+          <span>DOB:</span> ${user.dob}<br />
+          <span>Gender:</span> ${user.gender}<br />
+          <span>Phone:</span> ${user.phone}
+        `;
+        list.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
